@@ -11,7 +11,13 @@ export interface AuthResponse {
   user: User;
 }
 
-export type TaskStatus = 'TODO' | 'DOING' | 'RESOLVED' | 'CLOSE';
+export type TaskStatus =
+  | 'TODO'
+  | 'DOING'
+  | 'RESOLVED'
+  | 'READY_TO_TEST'
+  | 'READY_TO_STAGING'
+  | 'CLOSE';
 export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 
 export interface Task {

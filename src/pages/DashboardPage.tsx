@@ -305,7 +305,10 @@ const DashboardPage: React.FC = () => {
   const columns: { id: TaskStatus; label: string; icon: any; color: string }[] = [
     { id: 'TODO', label: 'To Do', icon: Clock, color: 'text-surface-400' },
     { id: 'DOING', label: 'In Progress', icon: PlayCircle, color: 'text-accent' },
-    { id: 'RESOLVED', label: 'Completed', icon: CheckCircle2, color: 'text-green-500' },
+    { id: 'RESOLVED', label: 'Resolved', icon: CheckCircle2, color: 'text-green-500' },
+    { id: 'READY_TO_TEST', label: 'Ready To Test', icon: CheckCircle2, color: 'text-cyan-400' },
+    { id: 'READY_TO_STAGING', label: 'Ready To Staging', icon: CheckCircle2, color: 'text-violet-400' },
+    { id: 'CLOSE', label: 'Closed', icon: CheckCircle2, color: 'text-surface-500' },
   ];
 
   const handleDragStart = (event: any) => {

@@ -32,6 +32,13 @@ export interface Task {
   updatedAt: string;
 }
 
+export interface TasksListResponse {
+  data: Task[];
+  total: number;
+  page: number;
+  lastPage: number;
+}
+
 export interface LoginDto {
   email: string;
   password?: string;

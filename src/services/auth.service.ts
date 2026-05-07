@@ -19,6 +19,11 @@ export const authService = {
     return response.data;
   },
 
+  async getUsers(): Promise<User[]> {
+    const response = await api.get<User[]>("/users");
+    return response.data;
+  },
+
   async logout(): Promise<void> {
     try {
       if (localStorage.getItem("token")) {

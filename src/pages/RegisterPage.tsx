@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { UserPlus, Mail, Lock, User, Loader2, LayoutDashboard } from 'lucide-react';
+import {
+  ArrowRight,
+  LayoutDashboard,
+  Loader2,
+  Lock,
+  Mail,
+  ShieldCheck,
+  User,
+  UserPlus,
+  Users,
+} from 'lucide-react';
 import { authService } from '../services/auth.service';
 
 const RegisterPage: React.FC = () => {
@@ -23,7 +33,7 @@ const RegisterPage: React.FC = () => {
       setSuccess(true);
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
+      }, 1800);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to register. Please try again.');
     } finally {
@@ -32,128 +42,190 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-background font-sans">
-      {/* Decorative Circles / Glows */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-accent/5 rounded-full blur-[150px]" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[150px]" />
+    <div className="auth-shell">
+      <div className="auth-glow left-[-12%] top-[8%] h-[24rem] w-[24rem] bg-accent/12" />
+      <div className="auth-glow bottom-[-10%] right-[-8%] h-[20rem] w-[20rem] bg-violet-500/12" />
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-full max-w-md relative z-10 my-8"
-      >
-        <div className="glass-card p-10 border border-white/5 shadow-2xl relative overflow-hidden">
-          {success && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 z-20 glass flex flex-col items-center justify-center p-8 text-center"
-            >
-              <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-6">
-                <UserPlus className="w-8 h-8" />
-              </div>
-              <h2 className="text-2xl font-bold text-text mb-2">Welcome aboard!</h2>
-              <p className="text-surface-400 text-sm">Your account has been created. Redirecting to login...</p>
-            </motion.div>
-          )}
-
-          <div className="flex flex-col items-center mb-10">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center mb-6 shadow-xl transform -rotate-3 hover:rotate-0 transition-transform duration-300">
-              <LayoutDashboard className="w-8 h-8 text-white" />
+      <aside className="auth-side-panel">
+        <div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-emerald-400 text-primary shadow-lg shadow-accent/20">
+              <LayoutDashboard className="h-6 w-6" />
             </div>
-            <h1 className="text-3xl font-bold text-text mb-2 tracking-tight">Create Account</h1>
-            <p className="text-surface-400 text-center text-sm font-medium">Join high-performing teams on TaskControl.</p>
+            <div>
+              <p className="section-label">TaskControl</p>
+              <p className="mt-1 text-sm text-surface-300">Build structure before the sprint gets noisy.</p>
+            </div>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-6">
-            {error && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+            className="mt-16 max-w-xl"
+          >
+            <span className="stat-chip">Team Onboarding</span>
+            <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight text-white">
+              Start with a board that respects ownership from day one.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg leading-8 text-surface-300">
+              Create your account, enter the workspace, and keep reporting, assignment, and status flow aligned from the first task.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid gap-4">
+          {[
+            {
+              icon: Users,
+              title: 'Clear team handoff model',
+              body: 'Reporter and assignee stay visible so every task keeps a clear owner and executor.',
+            },
+            {
+              icon: ShieldCheck,
+              title: 'Role-based visibility',
+              body: 'Permission-aware flows reduce accidental access and keep work scoped to the right people.',
+            },
+            {
+              icon: UserPlus,
+              title: 'Fast activation path',
+              body: 'Registration stays lightweight so teams can start using the board without setup drag.',
+            },
+          ].map(({ icon: Icon, title, body }) => (
+            <div key={title} className="panel-muted p-5">
+              <div className="flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-text">{title}</p>
+                  <p className="text-sm leading-6 text-surface-400">{body}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      <section className="auth-form-panel">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+          className="relative z-10 w-full max-w-lg"
+        >
+          <div className="glass-card relative overflow-hidden border-white/6 p-8 sm:p-10">
+            {success && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-background/92 px-8 text-center backdrop-blur-xl"
               >
-                {Array.isArray(error) ? error[0] : error}
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/15 text-accent">
+                  <UserPlus className="h-8 w-8" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold tracking-tight text-white">Account created</h2>
+                  <p className="text-sm leading-6 text-surface-300">
+                    Redirecting you to login so you can enter the board.
+                  </p>
+                </div>
               </motion.div>
             )}
 
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-surface-400 ml-1">Full Name</label>
-              <div className="relative group">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500 group-focus-within:text-accent transition-colors" />
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="input-field pl-12 focus:ring-accent/10"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
+            <div className="mb-10">
+              <span className="stat-chip">Create Account</span>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight text-white">Join the workspace</h2>
+              <p className="mt-3 text-sm leading-6 text-surface-400">
+                Set up your identity once, then start reporting, assigning, and moving tasks with clear ownership.
+              </p>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-surface-400 ml-1">Work Email</label>
-              <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500 group-focus-within:text-accent transition-colors" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-12 focus:ring-accent/10"
-                  placeholder="name@company.com"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-surface-400 ml-1">Password</label>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500 group-focus-within:text-accent transition-colors" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input-field pl-12 focus:ring-accent/10"
-                  placeholder="At least 6 characters"
-                  required
-                  minLength={6}
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || success}
-              className="btn-primary w-full flex items-center justify-center gap-3 group text-sm font-bold uppercase tracking-widest shadow-lg shadow-accent/20 mt-8"
-            >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  Register
-                  <UserPlus className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </>
+            <form onSubmit={handleRegister} className="space-y-6">
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm font-medium text-red-300"
+                >
+                  {Array.isArray(error) ? error[0] : error}
+                </motion.div>
               )}
-            </button>
-          </form>
 
-          <div className="mt-8 pt-8 border-t border-white/5 text-center">
-            <p className="text-surface-500 text-sm font-medium">
-              Already have an account?{' '}
-              <Link to="/login" className="text-accent font-bold hover:underline underline-offset-4 decoration-2">
-                Log in
+              <div className="space-y-2">
+                <label htmlFor="register-full-name" className="section-label">Full Name</label>
+                <div className="relative group">
+                  <User className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-accent" />
+                  <input
+                    id="register-full-name"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="input-field pl-12"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="register-email" className="section-label">Work Email</label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-accent" />
+                  <input
+                    id="register-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="input-field pl-12"
+                    placeholder="name@company.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="register-password" className="section-label">Password</label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-accent" />
+                  <input
+                    id="register-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input-field pl-12"
+                    placeholder="At least 6 characters"
+                    required
+                    minLength={6}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || success}
+                className="btn-primary mt-2 flex w-full items-center justify-center gap-3 py-3 text-sm font-bold uppercase tracking-[0.18em] shadow-lg shadow-accent/20"
+              >
+                {loading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <>
+                    Create Workspace Access
+                    <ArrowRight className="h-5 w-5" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="mt-8 border-t border-white/6 pt-6 text-sm text-surface-400">
+              Already have access?{' '}
+              <Link to="/login" className="font-semibold text-accent transition-opacity hover:opacity-80">
+                Sign in here
               </Link>
-            </p>
+            </div>
           </div>
-        </div>
-        
-        {/* Footer info */}
-        <p className="text-center mt-8 text-surface-700 text-xs font-medium">
-          By registering, you agree to our Terms of Service.
-        </p>
-      </motion.div>
+        </motion.div>
+      </section>
     </div>
   );
 };
